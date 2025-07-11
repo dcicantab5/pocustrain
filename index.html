@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="author" content="POCUS Education Team">
+    <title>POCUS Curriculum - Point-of-Care Ultrasound Training</title>
+    <meta name="description" content="Comprehensive Point-of-Care Ultrasound curriculum with SMART-based competency assessment framework">
+    <meta name="keywords" content="POCUS, ultrasound, medical education, curriculum, competency assessment, training">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="POCUS Curriculum - Point-of-Care Ultrasound Training">
+    <meta property="og:description" content="Comprehensive POCUS curriculum with SMART-based competency assessment">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="POCUS Curriculum - Point-of-Care Ultrasound Training">
+    <meta property="twitter:description" content="Comprehensive POCUS curriculum with competency assessment">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='50' x='50' text-anchor='middle' font-size='50'>🩺</text></svg>">
+    
+    <!-- React and Babel for development -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb;
+            color: #111827;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        #root {
+            min-height: 100vh;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState } = React;
+
+        // SVG Icon Components
+        const BookOpenIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+        );
+
+        const UsersIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+            </svg>
+        );
+
+        const TargetIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
+        );
+
+        const ClockIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        );
+
+        const CheckCircleIcon = () => (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        );
+
+        const POCUSCurriculumApp = () => {
+            const [activeTab, setActiveTab] = useState('overview');
+            const [activeModule, setActiveModule] = useState(1);
+            const [activeDomain, setActiveDomain] = useState('knowledge');
+
+            const modules = [
+                {
+                    id: 1,
+                    title: "Introduction to Point-of-Care Ultrasound",
+                    duration: "2 weeks",
+                    objectives: [
+                        "Show a basic understanding of POCUS applications",
+                        "Select the correct probe for examination",
+                        "Know what the different ultrasound modes are",
+                        "Describe important concepts on knobology",
+                        "Describe ultrasound imaging and probe motion terminology",
+                        "Use proper ultrasound ergonomics and positioning",
+                        "Identify common ultrasound artifacts"
+                    ],
+                    content: [
+                        "Physics and fundamentals of ultrasound",
+                        "Equipment overview and probe selection",
+                        "Image optimization and controls",
+                        "Basic scanning techniques and ergonomics",
+                        "Artifact recognition and troubleshooting",
+                        "Safety considerations and bioeffects"
+                    ]
+                },
+                {
+                    id: 2,
+                    title: "Pulmonary Ultrasound",
+                    duration: "1 week",
+                    objectives: [
+                        "Perform an 8-point lung examination",
+                        "Identify findings of aerated lung ultrasound",
+                        "Interpret ultrasound findings consistent with pneumonia and pulmonary edema",
+                        "Incorporate lung ultrasound education in clinical precepting"
+                    ],
+                    content: [
+                        "Lung anatomy and ultrasound appearance",
+                        "Normal lung patterns (A-lines, lung sliding)",
+                        "Pathological patterns (B-lines, consolidation, pleural effusion)",
+                        "Clinical applications and limitations"
+                    ]
+                },
+                {
+                    id: 3,
+                    title: "Focused Assessment with Sonography for Trauma (FAST)",
+                    duration: "1 week",
+                    objectives: [
+                        "Perform a complete FAST examination",
+                        "Identify free fluid in peritoneal and pericardial spaces",
+                        "Understand limitations and clinical integration of FAST",
+                        "Demonstrate proper technique for all FAST views"
+                    ],
+                    content: [
+                        "Trauma ultrasound principles",
+                        "Four-view FAST protocol",
+                        "Extended FAST (eFAST) including pneumothorax detection",
+                        "Clinical decision-making integration"
+                    ]
+                },
+                {
+                    id: 4,
+                    title: "Abdominal Ultrasound Basics",
+                    duration: "1 week",
+                    objectives: [
+                        "Perform basic abdominal ultrasound examination",
+                        "Identify normal abdominal anatomy",
+                        "Recognize common abdominal pathologies",
+                        "Understand limitations of bedside abdominal ultrasound"
+                    ],
+                    content: [
+                        "Abdominal anatomy review",
+                        "Scanning techniques and patient positioning",
+                        "Normal sonographic appearance of abdominal organs",
+                        "Common pathological findings"
+                    ]
+                },
+                {
+                    id: 5,
+                    title: "Deep Venous Thrombosis (DVT)",
+                    duration: "1 week",
+                    objectives: [
+                        "Perform a 2-region compression exam to evaluate for deep venous thrombosis with POCUS",
+                        "Know indications for DVT evaluation with POCUS and differences/indications for variations of DVT US and adjunctive lower extremity imaging",
+                        "Understand normal findings of the lower extremity deep venous system",
+                        "Interpret ultrasound findings of a deep venous thrombosis",
+                        "Identify clinical scenarios, limitations, and pitfalls for DVT POCUS exams"
+                    ],
+                    content: [
+                        "Lower extremity venous anatomy",
+                        "Two-point compression technique",
+                        "DVT ultrasound findings and interpretation",
+                        "Clinical integration and limitations"
+                    ]
+                },
+                {
+                    id: 6,
+                    title: "Cardiac Ultrasound",
+                    duration: "1 week",
+                    objectives: [
+                        "Obtain four cardiac windows (parasternal long, parasternal short, apical 4 chamber, and subxiphoid)",
+                        "Know the indications of cardiac ultrasound",
+                        "Understand the normal findings of a heart ultrasound",
+                        "Interpret ultrasound findings seen in heart failure",
+                        "Identify clinical scenarios in which POCUS can help with clinical care"
+                    ],
+                    content: [
+                        "Cardiac anatomy and physiology review",
+                        "Standard cardiac views and optimization",
+                        "Normal cardiac function assessment",
+                        "Heart failure and volume status evaluation",
+                        "Pericardial effusion recognition"
+                    ]
+                }
+            ];
+
+            const competencyLevels = [
+                { level: 1, name: "Novice", color: "bg-red-100 text-red-800" },
+                { level: 2, name: "Advanced Beginner", color: "bg-orange-100 text-orange-800" },
+                { level: 3, name: "Competent", color: "bg-yellow-100 text-yellow-800" },
+                { level: 4, name: "Proficient", color: "bg-blue-100 text-blue-800" },
+                { level: 5, name: "Expert", color: "bg-green-100 text-green-800" }
+            ];
+
+            const competencyDomains = [
+                {
+                    id: 'knowledge',
+                    title: 'Knowledge Domain',
+                    subtitle: 'Knowledge → Comprehension → Application',
+                    weight: '40%',
+                    description: 'Understanding of ultrasound physics, anatomy, and pathology recognition',
+                    criteria: [
+                        {
+                            name: "Ultrasound Physics",
+                            levels: [
+                                { level: 1, description: "Recalls basic ultrasound principles", metrics: "Scores 60-69% on physics quiz", timeline: "By end of Module 1" },
+                                { level: 2, description: "Explains wave properties and image formation", metrics: "Scores 70-79% on physics assessment", timeline: "By end of Module 2" },
+                                { level: 3, description: "Applies physics principles to optimize images", metrics: "Scores 80-89% on comprehensive exam", timeline: "By midterm assessment (Week 3)" },
+                                { level: 4, description: "Troubleshoots technical issues using physics knowledge", metrics: "Scores 90-94% on advanced assessment", timeline: "By Module 5" },
+                                { level: 5, description: "Teaches physics concepts to others effectively", metrics: "Scores ≥95% consistently", timeline: "By program completion" }
+                            ]
+                        },
+                        {
+                            name: "Anatomy Recognition",
+                            levels: [
+                                { level: 1, description: "Identifies 4/6 basic anatomical structures per organ system", metrics: "Achieves 60-69% on anatomy assessments", timeline: "Within first 2 modules" },
+                                { level: 2, description: "Recognizes 5/6 relevant anatomical structures", metrics: "Achieves 70-79% on anatomy assessments", timeline: "By Module 3" },
+                                { level: 3, description: "Consistently identifies 6/6 normal anatomical structures", metrics: "Achieves 80-89% on comprehensive anatomy exam", timeline: "By Module 4" },
+                                { level: 4, description: "Recognizes anatomical variants in 4/5 cases", metrics: "Achieves 90-94% on advanced anatomy assessment", timeline: "By Module 5" },
+                                { level: 5, description: "Explains complex anatomical relationships", metrics: "Achieves ≥95% consistently", timeline: "By program completion" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 'application',
+                    title: 'Application Domain',
+                    subtitle: 'Application → Analysis → Synthesis',
+                    weight: '40%',
+                    description: 'Hands-on skills, image acquisition, and clinical integration',
+                    criteria: [
+                        {
+                            name: "Image Acquisition",
+                            levels: [
+                                { level: 1, description: "Obtains 3/5 required views with faculty assistance", metrics: "Completes basic examination in <10 minutes", timeline: "By Module 2" },
+                                { level: 2, description: "Obtains 4/5 required views independently", metrics: "Completes examination in <8 minutes", timeline: "By Module 3" },
+                                { level: 3, description: "Obtains 5/5 diagnostic quality images consistently", metrics: "Completes examination in <6 minutes", timeline: "By Module 4" },
+                                { level: 4, description: "Optimizes images in difficult conditions", metrics: "Maintains quality in 9/10 challenging cases", timeline: "By Module 5" },
+                                { level: 5, description: "Obtains exceptional images in all conditions", metrics: "Achieves diagnostic quality in 10/10 cases", timeline: "By program completion" }
+                            ]
+                        },
+                        {
+                            name: "Clinical Integration",
+                            levels: [
+                                { level: 1, description: "Applies ultrasound findings to 2/3 straightforward cases", metrics: "Makes appropriate clinical decisions 60-69% of time", timeline: "By Module 2" },
+                                { level: 2, description: "Integrates findings with clinical assessment in 3/4 cases", metrics: "Makes appropriate decisions 70-79% of time", timeline: "By Module 3" },
+                                { level: 3, description: "Uses ultrasound to guide clinical decisions in 4/5 cases", metrics: "Makes appropriate decisions 80-89% of time", timeline: "By Module 4" },
+                                { level: 4, description: "Develops evidence-based protocols for clinical scenarios", metrics: "Makes appropriate decisions 90-94% of time", timeline: "By Module 5" },
+                                { level: 5, description: "Pioneers new clinical applications and protocols", metrics: "Makes appropriate decisions ≥95% of time", timeline: "By program completion" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 'synthesis',
+                    title: 'Synthesis Domain',
+                    subtitle: 'Synthesis → Evaluation → Creation',
+                    weight: '20%',
+                    description: 'Quality assurance, teaching, and innovative applications',
+                    criteria: [
+                        {
+                            name: "Quality Assurance",
+                            levels: [
+                                { level: 1, description: "Identifies 2/3 obvious image quality issues", metrics: "Participates in 1 QA activity per module", timeline: "Throughout program" },
+                                { level: 2, description: "Identifies 3/4 image quality and safety issues", metrics: "Contributes to 2 QA activities per module", timeline: "By Module 3" },
+                                { level: 3, description: "Maintains personal QA standards in 4/5 cases", metrics: "Leads 1 QA project", timeline: "By Module 4" },
+                                { level: 4, description: "Designs QA protocols for clinical areas", metrics: "Implements 2 QA initiatives", timeline: "By Module 5" },
+                                { level: 5, description: "Creates innovative QA programs", metrics: "Publishes/presents QA research", timeline: "By program completion" }
+                            ]
+                        },
+                        {
+                            name: "Teaching and Mentoring",
+                            levels: [
+                                { level: 1, description: "Observes teaching sessions and provides basic peer feedback", metrics: "Attends 100% of teaching observations", timeline: "Modules 1-2" },
+                                { level: 2, description: "Assists with teaching 2 junior learners", metrics: "Completes 4 teaching assistant sessions", timeline: "Modules 3-4" },
+                                { level: 3, description: "Independently teaches 1 complete module to peers", metrics: "Receives ≥4/5 rating on teaching evaluation", timeline: "Module 5" },
+                                { level: 4, description: "Mentors 2+ junior learners through complete modules", metrics: "Achieves ≥4.5/5 on teaching evaluations", timeline: "Module 6" },
+                                { level: 5, description: "Develops new teaching methodologies and curricula", metrics: "Publishes educational innovations", timeline: "Post-program career development" }
+                            ]
+                        }
+                    ]
+                }
+            ];
+
+            const TabButton = ({ id, label, icon: Icon, active, onClick }) => (
+                <button
+                    onClick={() => onClick(id)}
+                    className={`flex items-center gap-2 px-4 py-3 font-medium rounded-lg transition-all ${
+                        active
+                            ? 'bg-blue-600 text-white shadow-md'
+                            : 'bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    }`}
+                >
+                    <Icon />
+                    {label}
+                </button>
+            );
+
+            const ModuleCard = ({ module, isActive, onClick }) => (
+                <div
+                    onClick={() => onClick(module.id)}
+                    className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                        isActive
+                            ? 'border-blue-500 bg-blue-50'
+                            : 'border-gray-200 hover:border-gray-300 bg-white'
+                    }`}
+                >
+                    <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-semibold text-gray-900">Module {module.id}</h3>
+                        <span className={`px-2 py-1 text-xs rounded-full ${
+                            isActive ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600'
+                        }`}>
+                            {module.duration}
+                        </span>
+                    </div>
+                    <p className="text-sm text-gray-700 mb-3">{module.title}</p>
+                    <div className="text-xs text-gray-500">
+                        {module.objectives.length} objectives • {module.content.length} content areas
+                    </div>
+                </div>
+            );
+
+            const DomainCard = ({ domain, isActive, onClick }) => (
+                <div
+                    onClick={() => onClick(domain.id)}
+                    className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                        isActive
+                            ? 'border-blue-500 bg-blue-50'
+                            : 'border-gray-200 hover:border-gray-300 bg-white'
+                    }`}
+                >
+                    <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-semibold text-gray-900">{domain.title}</h3>
+                        <span className={`px-2 py-1 text-xs rounded-full ${
+                            isActive ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600'
+                        }`}>
+                            {domain.weight}
+                        </span>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-3">{domain.subtitle}</p>
+                    <p className="text-xs text-gray-500 mb-3">{domain.description}</p>
+                    <div className="text-xs text-gray-500">
+                        {domain.criteria.length} criteria • {domain.criteria.reduce((acc, c) => acc + c.levels.length, 0)} competency levels
+                    </div>
+                </div>
+            );
+
+            return (
+                <div className="min-h-screen bg-gray-50">
+                    {/* Header */}
+                    <div className="bg-white shadow-sm border-b">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex items-center justify-between h-16">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                                        <BookOpenIcon />
+                                    </div>
+                                    <div>
+                                        <h1 className="text-xl font-bold text-gray-900">POCUS Curriculum</h1>
+                                        <p className="text-sm text-gray-600">Point-of-Care Ultrasound Training Program</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                        {/* Navigation */}
+                        <div className="flex gap-2 mb-8 p-1 bg-gray-100 rounded-lg">
+                            <TabButton
+                                id="overview"
+                                label="Program Overview"
+                                icon={TargetIcon}
+                                active={activeTab === 'overview'}
+                                onClick={setActiveTab}
+                            />
+                            <TabButton
+                                id="modules"
+                                label="Modules"
+                                icon={BookOpenIcon}
+                                active={activeTab === 'modules'}
+                                onClick={setActiveTab}
+                            />
+                            <TabButton
+                                id="rubric"
+                                label="Competency Rubric"
+                                icon={CheckCircleIcon}
+                                active={activeTab === 'rubric'}
+                                onClick={setActiveTab}
+                            />
+                        </div>
+
+                        {/* Content */}
+                        {activeTab === 'overview' && (
+                            <div className="space-y-8">
+                                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+                                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Program Overview</h2>
+                                    <div className="prose prose-lg max-w-none text-gray-700">
+                                        <p className="text-lg leading-relaxed mb-6">
+                                            This comprehensive POCUS curriculum is designed for medical students, residents, and practicing physicians to develop competency in point-of-care ultrasound applications across multiple organ systems. The program emphasizes both didactic learning and hands-on skill development.
+                                        </p>
+                                        
+                                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 my-8">
+                                            <div className="bg-blue-50 p-6 rounded-lg">
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <ClockIcon />
+                                                    <h3 className="font-semibold text-gray-900">Duration</h3>
+                                                </div>
+                                                <p className="text-gray-700">6 weeks (can be adapted for intensive or extended formats)</p>
+                                            </div>
+                                            
+                                            <div className="bg-green-50 p-6 rounded-lg">
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <UsersIcon />
+                                                    <h3 className="font-semibold text-gray-900">Format</h3>
+                                                </div>
+                                                <p className="text-gray-700">Hybrid learning with didactic sessions, hands-on workshops, and clinical integration</p>
+                                            </div>
+                                            
+                                            <div className="bg-purple-50 p-6 rounded-lg">
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <TargetIcon />
+                                                    <h3 className="font-semibold text-gray-900">Prerequisites</h3>
+                                                </div>
+                                                <p className="text-gray-700">Basic understanding of human anatomy and physiology</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+                                    <h3 className="text-xl font-semibold text-gray-900 mb-6">Module Overview</h3>
+                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        {modules.map((module) => (
+                                            <div key={module.id} className="border border-gray-200 rounded-lg p-4">
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <span className="w-8 h-8 bg-blue-100 text-blue-800 rounded-full flex items-center justify-center text-sm font-medium">
+                                                        {module.id}
+                                                    </span>
+                                                    <span className="text-xs text-gray-500">{module.duration}</span>
+                                                </div>
+                                                <h4 className="font-medium text-gray-900 mb-2">{module.title}</h4>
+                                                <p className="text-sm text-gray-600">
+                                                    {module.objectives.length} learning objectives
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'modules' && (
+                            <div className="grid lg:grid-cols-3 gap-8">
+                                <div className="space-y-4">
+                                    <h2 className="text-xl font-semibold text-gray-900">Modules</h2>
+                                    {modules.map((module) => (
+                                        <ModuleCard
+                                            key={module.id}
+                                            module={module}
+                                            isActive={activeModule === module.id}
+                                            onClick={setActiveModule}
+                                        />
+                                    ))}
+                                </div>
+
+                                <div className="lg:col-span-2">
+                                    {modules.find(m => m.id === activeModule) && (
+                                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+                                            <div className="flex items-center gap-3 mb-6">
+                                                <span className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold">
+                                                    {activeModule}
+                                                </span>
+                                                <div>
+                                                    <h2 className="text-2xl font-bold text-gray-900">
+                                                        {modules.find(m => m.id === activeModule).title}
+                                                    </h2>
+                                                    <p className="text-gray-600">
+                                                        Duration: {modules.find(m => m.id === activeModule).duration}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-8">
+                                                <div>
+                                                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Learning Objectives</h3>
+                                                    <div className="space-y-2">
+                                                        {modules.find(m => m.id === activeModule).objectives.map((objective, index) => (
+                                                            <div key={index} className="flex items-start gap-3">
+                                                                <CheckCircleIcon />
+                                                                <p className="text-gray-700">{objective}</p>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Content Areas</h3>
+                                                    <div className="space-y-2">
+                                                        {modules.find(m => m.id === activeModule).content.map((item, index) => (
+                                                            <div key={index} className="flex items-start gap-3">
+                                                                <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
+                                                                <p className="text-gray-700">{item}</p>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'rubric' && (
+                            <div className="grid lg:grid-cols-3 gap-8">
+                                <div className="space-y-4">
+                                    <div className="mb-6">
+                                        <h2 className="text-xl font-semibold text-gray-900 mb-2">Competency Domains</h2>
+                                        <p className="text-sm text-gray-600">
+                                            SMART-based assessment framework
+                                        </p>
+                                    </div>
+                                    
+                                    <div className="flex flex-wrap justify-center gap-2 mb-6">
+                                        {competencyLevels.map((level) => (
+                                            <span key={level.level} className={`px-2 py-1 rounded-full text-xs font-medium ${level.color}`}>
+                                                {level.level}. {level.name}
+                                            </span>
+                                        ))}
+                                    </div>
+                                    
+                                    {competencyDomains.map((domain) => (
+                                        <DomainCard
+                                            key={domain.id}
+                                            domain={domain}
+                                            isActive={activeDomain === domain.id}
+                                            onClick={setActiveDomain}
+                                        />
+                                    ))}
+                                </div>
+
+                                <div className="lg:col-span-2">
+                                    {competencyDomains.find(d => d.id === activeDomain) && (
+                                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+                                            <div className="flex items-center gap-3 mb-6">
+                                                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white ${
+                                                    activeDomain === 'knowledge' ? 'bg-blue-600' : 
+                                                    activeDomain === 'application' ? 'bg-green-600' : 'bg-purple-600'
+                                                }`}>
+                                                    {activeDomain === 'knowledge' ? 'K' : 
+                                                     activeDomain === 'application' ? 'A' : 'S'}
+                                                </div>
+                                                <div>
+                                                    <h2 className="text-2xl font-bold text-gray-900">
+                                                        {competencyDomains.find(d => d.id === activeDomain).title}
+                                                    </h2>
+                                                    <p className="text-gray-600">
+                                                        {competencyDomains.find(d => d.id === activeDomain).subtitle} • {competencyDomains.find(d => d.id === activeDomain).weight} of total grade
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className="mb-6">
+                                                <p className="text-gray-700">{competencyDomains.find(d => d.id === activeDomain).description}</p>
+                                            </div>
+
+                                            <div className="space-y-8">
+                                                {competencyDomains.find(d => d.id === activeDomain).criteria.map((criterion, criterionIndex) => (
+                                                    <div key={criterionIndex}>
+                                                        <h3 className="text-lg font-semibold text-gray-900 mb-4">{criterion.name}</h3>
+                                                        <div className="space-y-3">
+                                                            {criterion.levels.map((level) => (
+                                                                <div key={level.level} className="flex items-start gap-4 p-4 rounded-lg bg-gray-50 border border-gray-100">
+                                                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                                                        competencyLevels.find(l => l.level === level.level)?.color
+                                                                    }`}>
+                                                                        Level {level.level}
+                                                                    </span>
+                                                                    <div className="flex-1 min-w-0">
+                                                                        <p className="text-sm text-gray-900 mb-2 font-medium">{level.description}</p>
+                                                                        <div className="grid md:grid-cols-2 gap-4 text-xs">
+                                                                            <div>
+                                                                                <span className="font-medium text-gray-700">Metrics:</span>
+                                                                                <p className="text-gray-600 mt-1">{level.metrics}</p>
+                                                                            </div>
+                                                                            <div>
+                                                                                <span className="font-medium text-gray-700">Timeline:</span>
+                                                                                <p className="text-gray-600 mt-1">{level.timeline}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="mt-8 text-center text-sm text-gray-500 pb-8">
+                        <p>This curriculum is designed to be adaptable to different learning environments and can be modified based on specific institutional needs and learner populations.</p>
+                    </div>
+                </div>
+            );
+        };
+
+        // Render the app
+        ReactDOM.render(<POCUSCurriculumApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>
